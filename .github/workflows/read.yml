@@ -40,8 +40,7 @@ jobs:
 
           async function searchGoogle(query) {
             const encodedQuery = encodeURIComponent(query);
-            const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&exintro=1&explaintext=1&titles=${encodedQuery}`;
-            
+            const url = \`https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&exintro=1&explaintext=1&titles=\${encodedQuery}\`;            
             try {
               const response = await fetch(url);
               const data = await response.json();
