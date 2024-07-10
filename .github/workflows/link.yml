@@ -1,0 +1,58 @@
+name: Update Readme with Topic Info
+
+on:
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Topic to search and update in README'
+        required: true
+  schedule:
+    - cron: '0 0 * * *'  # Runs every day at midnight
+
+jobs:
+  update_readme:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Clear npm cache
+        run: npm cache clean --force
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'v20.12.1'
+
+      - name: Install dependencies
+        run: |
+          npm init -y
+          npm install node-fetch@2
+
+      - name: Fetch blog news and links
+        id: search
+        run: |
+          # Replace this with your actual logic to fetch blog news and links
+          # Example: Using node-fetch to fetch data from an API
+          topic="${{ github.event.inputs.topic }}"
+          api_url="https://example.com/api/news?topic=${topic}"
+          info=$(node -e "const fetch = require('node-fetch'); fetch('${api_url}').then(res => res.json()).then(data => console.log(data));")
+
+          echo "::set-output name=info::${info}"
+
+      - name: Run update script
+        run: |
+          echo "Updating README with info:"
+          echo "${{ steps.search.outputs.info }}"
+          node ./scripts/read.js "${{ github.event.inputs.topic }}" "${{ steps.search.outputs.info }}"
+
+
+      - name: Commit and push if changed
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add README.md
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update README with new topic information: ${{ github.event.inputs.topic }}" && git push)
