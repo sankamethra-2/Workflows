@@ -39,9 +39,13 @@ jobs:
           encoded_topic=$(echo "$topic" | sed 's/ /+/g')
           search_url="https://www.google.com/search?q=$encoded_topic"
           result=$(curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" "$search_url" | grep -oP '(?<=<div class="BNeawe s3v9rd AP7Wnd">).+?(?=</div>)' | head -n 1)
+          if [ -z "$result" ]; then
+            result="No information found for this topic."
+          fi
           echo "info<<EOF" >> $GITHUB_OUTPUT
           echo "$result" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+
 
 
       - name: Run search and update script
