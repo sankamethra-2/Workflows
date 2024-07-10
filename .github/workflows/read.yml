@@ -3,9 +3,9 @@ name: Update Readme with Topic Info
 on:
   workflow_dispatch:
     inputs:
-      search_topic: 'AI'
-
-
+      topic:
+        description: 'Topic to search and update in README'
+        required: true
   schedule:
     - cron: '0 0 * * *'  # Runs every day at midnight
 
