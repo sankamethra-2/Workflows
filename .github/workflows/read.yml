@@ -31,12 +31,12 @@ jobs:
         run: |
           npm init -y
           npm install node-fetch@2
-          
+
       - name: Search and fetch information
         id: search
         run: |
           echo "Searching for topic: ${{ github.event.inputs.topic }}"
-          node search.js "${{ github.event.inputs.topic }}" >> $GITHUB_OUTPUT
+          node ./scripts/search.js "${{ github.event.inputs.topic }}" >> $GITHUB_OUTPUT
           echo "Search complete. Output:"
           cat $GITHUB_OUTPUT
 
