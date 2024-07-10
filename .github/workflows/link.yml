@@ -25,7 +25,7 @@ jobs:
           node-version: '16.x'
 
       - name: Install dependencies
-        run: npm install feedparser node-fetch
+        run: npm install rss-parser node-fetch
 
       - name: Run update script
         run: |

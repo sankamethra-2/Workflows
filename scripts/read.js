@@ -34,12 +34,14 @@ async function updateReadme(topic, articles) {
   const readmePath = './README.md';
   let content = await fs.readFile(readmePath, 'utf8');
 
-  const newContent = `# Latest News and Articles on ${topic}\n\n` +
+  const newContent = `## Latest News and Articles on ${topic}\n\n` +
     articles.map(article => 
-      `- [${article.title}](${article.link})\n  ${article.description ? article.description.slice(0, 150) + '...' : ''}`
-    ).join('\n\n');
+      `### [${article.title}](${article.link})\n` +
+      `${article.description ? article.description.slice(0, 150) + '...' : ''}\n\n` +
+      `Published: ${article.pubDate.toISOString().split('T')[0]}\n`
+    ).join('\n');
 
-  const regex = new RegExp(`# Latest News and Articles on ${topic}[\\s\\S]*?(?=\\n#|$)`, 'i');
+  const regex = new RegExp(`## Latest News and Articles on ${topic}[\\s\\S]*?(?=\\n##|$)`, 'i');
   if (content.match(regex)) {
     content = content.replace(regex, newContent);
   } else {
