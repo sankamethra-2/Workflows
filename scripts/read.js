@@ -18,7 +18,7 @@ async function updateReadmeWithTopic(topic) {
 }
 
 // Fetch topic from command line argument
-const topic = "AI";
+const topic = process.argv[2];
 if (!topic) {
   console.error('Topic not provided.');
   process.exit(1);  // Exit with non-zero code if topic is missing
