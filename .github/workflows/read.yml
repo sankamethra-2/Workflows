@@ -28,7 +28,10 @@ jobs:
           node-version: 'v20.12.1'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm init -y
+          npm install node-fetch@2
+
 
       - name: Run search and update script
         run: node ./scripts/read.js "${{ github.event.inputs.topic }}"
