@@ -30,7 +30,7 @@ jobs:
       - name: Run update script
         run: |
           topic="${{ github.event.inputs.topic }}"
-          node ./scripts/update_readme.js "${topic}"
+          node ./scripts/read.js "${topic}"
 
       - name: Commit and push if changed
         run: |
