@@ -32,21 +32,45 @@ jobs:
           npm init -y
           npm install node-fetch@2
 
-      - name: Search Google
+      - name: Search and fetch information
         id: search
         run: |
-          topic="${{ github.event.inputs.topic }}"
-          encoded_topic=$(echo "$topic" | sed 's/ /+/g')
-          search_url="https://www.google.com/search?q=$encoded_topic"
-          result=$(curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" "$search_url" | grep -oP '(?<=<div class="BNeawe s3v9rd AP7Wnd">).+?(?=</div>)' | head -n 1)
-          if [ -z "$result" ]; then
-            result="No information found for this topic."
-          fi
-          echo "info<<EOF" >> $GITHUB_OUTPUT
-          echo "$result" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          node << EOF
+          const fetch = require('node-fetch');
 
+          async function searchGoogle(query) {
+            const encodedQuery = encodeURIComponent(query);
+            const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&exintro=1&explaintext=1&titles=${encodedQuery}`;
+            
+            try {
+              const response = await fetch(url);
+              const data = await response.json();
+              const pages = data.query.pages;
+              const pageId = Object.keys(pages)[0];
+              const extract = pages[pageId].extract;
 
+              if (extract) {
+                return extract.split('\n')[0]; // Return only the first paragraph
+              } else {
+                return "No information found for this topic.";
+              }
+            } catch (error) {
+              console.error('Error searching:', error);
+              return "An error occurred while fetching information.";
+            }
+          }
+
+          searchGoogle("${{ github.event.inputs.topic }}")
+            .then(result => {
+              console.log("info<<EOF");
+              console.log(result);
+              console.log("EOF");
+            })
+            .catch(error => {
+              console.error(error);
+              process.exit(1);
+            });
+          EOF
 
       - name: Run search and update script
         run: node ./scripts/read.js "${{ github.event.inputs.topic }}" "${{ steps.search.outputs.info }}"
