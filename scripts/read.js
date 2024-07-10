@@ -5,7 +5,7 @@ async function updateReadmeWithTopic(topic) {
   const dataFromGoogle = `Information related to ${topic} fetched from Google.`;
 
   // Update README.md with the fetched information
-  const readmePath = '../README.md';  // Adjust path as needed
+  const readmePath = './README.md';  // Adjust path as needed
   try {
     let readmeContent = fs.readFileSync(readmePath, 'utf8');
     readmeContent += `\n\n${dataFromGoogle}\n`;
