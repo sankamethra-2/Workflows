@@ -2,19 +2,19 @@ const fetch = require('node-fetch');
 
 async function searchWikipedia(query) {
   const encodedQuery = encodeURIComponent(query);
-  const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&exintro=1&explaintext=1&titles=${encodedQuery}`;
+  const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodedQuery}`;
   
   try {
     const response = await fetch(url);
     const data = await response.json();
-    const pages = data.query.pages;
-    const pageId = Object.keys(pages)[0];
-    const extract = pages[pageId].extract;
-
-    if (extract) {
-      return extract.split('\n')[0]; // Return only the first paragraph
+    
+    if (data.extract) {
+      return data.extract;
+    } else if (data.description) {
+      return data.description;
     } else {
-      return "No information found for this topic.";
+      console.error('API response:', JSON.stringify(data, null, 2));
+      return "No detailed information found for this topic.";
     }
   } catch (error) {
     console.error('Error searching:', error);

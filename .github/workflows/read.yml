@@ -31,14 +31,21 @@ jobs:
         run: |
           npm init -y
           npm install node-fetch@2
-
+          
       - name: Search and fetch information
         id: search
         run: |
-          node ./scripts/search.js "${{ github.event.inputs.topic }}" >> $GITHUB_OUTPUT
+          echo "Searching for topic: ${{ github.event.inputs.topic }}"
+          node search.js "${{ github.event.inputs.topic }}" >> $GITHUB_OUTPUT
+          echo "Search complete. Output:"
+          cat $GITHUB_OUTPUT
 
-      - name: Run search and update script
-        run: node ./scripts/read.js "${{ github.event.inputs.topic }}" "${{ steps.search.outputs.info }}"
+      - name: Run update script
+        run: |
+          echo "Updating README with info:"
+          echo "${{ steps.search.outputs.info }}"
+          node ./scripts/read.js "${{ github.event.inputs.topic }}" "${{ steps.search.outputs.info }}"
+
 
       - name: Commit and push if changed
         run: |
