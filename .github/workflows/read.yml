@@ -32,9 +32,20 @@ jobs:
           npm init -y
           npm install node-fetch@2
 
+      - name: Search Google
+        id: search
+        run: |
+          topic="${{ github.event.inputs.topic }}"
+          encoded_topic=$(echo "$topic" | sed 's/ /+/g')
+          search_url="https://www.google.com/search?q=$encoded_topic"
+          result=$(curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" "$search_url" | grep -oP '(?<=<div class="BNeawe s3v9rd AP7Wnd">).+?(?=</div>)' | head -n 1)
+          echo "info<<EOF" >> $GITHUB_OUTPUT
+          echo "$result" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
 
       - name: Run search and update script
-        run: node ./scripts/read.js "${{ github.event.inputs.topic }}"
+        run: node ./scripts/read.js "${{ github.event.inputs.topic }}" "${{ steps.search.outputs.info }}"
 
       - name: Commit and push if changed
         run: |

@@ -1,33 +1,6 @@
 const fs = require('fs');
-const fetch = require('node-fetch');
 
-async function searchWikipedia(query) {
-  const encodedQuery = encodeURIComponent(query);
-  const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&exintro=1&explaintext=1&titles=${encodedQuery}`;
-
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    const pages = data.query.pages;
-    const pageId = Object.keys(pages)[0];
-    const extract = pages[pageId].extract;
-
-    if (extract) {
-      // Limit the extract to around 150 words
-      const words = extract.split(' ').slice(0, 150);
-      return words.join(' ') + (words.length === 150 ? '...' : '');
-    } else {
-      return `No information found for "${query}" on Wikipedia.`;
-    }
-  } catch (error) {
-    console.error('Error searching Wikipedia:', error);
-    return `Error occurred while searching for "${query}".`;
-  }
-}
-
-async function updateReadmeWithTopic(topic) {
-  const information = await searchWikipedia(topic);
-
+function updateReadmeWithTopic(topic, information) {
   const readmePath = './README.md';
   try {
     let readmeContent = fs.readFileSync(readmePath, 'utf8');
@@ -38,10 +11,10 @@ async function updateReadmeWithTopic(topic) {
 
     if (existingSection) {
       // Replace existing section
-      readmeContent = readmeContent.replace(topicRegex, `## ${topic}\n\n${information}\n\nSource: Wikipedia\n\n`);
+      readmeContent = readmeContent.replace(topicRegex, `## ${topic}\n\n${information}\n\n`);
     } else {
       // Add new section
-      readmeContent += `\n\n## ${topic}\n\n${information}\n\nSource: Wikipedia\n`;
+      readmeContent += `\n\n## ${topic}\n\n${information}\n`;
     }
 
     fs.writeFileSync(readmePath, readmeContent);
@@ -52,12 +25,14 @@ async function updateReadmeWithTopic(topic) {
   }
 }
 
-// Fetch topic from command line argument
+// Fetch topic and information from command line arguments
 const topic = process.argv[2];
-if (!topic) {
-  console.error('Topic not provided.');
+const information = process.argv[3];
+
+if (!topic || !information) {
+  console.error('Topic or information not provided.');
   process.exit(1);
 }
 
 // Call function to update README with the topic information
-updateReadmeWithTopic(topic);
+updateReadmeWithTopic(topic, information);
