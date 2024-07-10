@@ -1,4 +1,4 @@
-name: Update Readme with Topic Info
+name: Update Readme with Topic link Info
 
 on:
   workflow_dispatch:
