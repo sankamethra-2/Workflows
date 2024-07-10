@@ -16,3 +16,20 @@
 
 - [Everyone Is Trying to Make This TikTok Go Viral—and It Never Will](https://www.wired.com/story/everyone-is-trying-to-make-this-tiktok-go-viral-and-it-never-will/)
   The app’s algorithm is so powerful that ordinary TikTok users can’t get their favorite videos into the record books. Homegrown viral campaigns like th...
+
+# Latest News and Articles on Java
+
+- [Guard Fired for Allowing Protesters into Java Reinstated After PSRA Intervenes - KahawaTungu](https://news.google.com/rss/articles/CBMiZ2h0dHBzOi8va2FoYXdhdHVuZ3UuY29tL2d1YXJkLWZpcmVkLWZvci1hbGxvd2luZy1wcm90ZXN0ZXJzLWludG8tamF2YS1yZWluc3RhdGVkLWFmdGVyLXBzcmEtaW50ZXJ2ZW5lcy_SAQA?oc=5)
+  Guard Fired for Allowing Protesters into Java Reinstated After PSRA Intervenes  KahawaTungu...
+
+- [Dozens of houses damaged after quake in Central Java - The Star Online](https://news.google.com/rss/articles/CBMic2h0dHBzOi8vd3d3LnRoZXN0YXIuY29tLm15L2FzZWFucGx1cy9hc2VhbnBsdXMtbmV3cy8yMDI0LzA3LzEwL2RvemVucy1vZi1ob3VzZXMtZGFtYWdlZC1hZnRlci1xdWFrZS1pbi1jZW50cmFsLWphdmHSAQA?oc=5)
+  Dozens of houses damaged after quake in Central Java  The Star Online...
+
+- [Aquion named ANZ distributor for Java platform vendor Azul - Distribution - Software - CRN Australia](https://news.google.com/rss/articles/CBMiXWh0dHBzOi8vd3d3LmNybi5jb20uYXUvbmV3cy9hcXVpb24tbmFtZWQtYW56LWRpc3RyaWJ1dG9yLWZvci1qYXZhLXBsYXRmb3JtLXZlbmRvci1henVsLTYwOTYyNdIBAA?oc=5)
+  Aquion named ANZ distributor for Java platform vendor Azul - Distribution - Software  CRN Australia...
+
+- [Azul appoints Aquion as new ANZ distributor to lower Java costs - ChannelLife Australia](https://news.google.com/rss/articles/CBMiYGh0dHBzOi8vY2hhbm5lbGxpZmUuY29tLmF1L3N0b3J5L2F6dWwtYXBwb2ludHMtYXF1aW9uLWFzLW5ldy1hbnotZGlzdHJpYnV0b3ItdG8tbG93ZXItamF2YS1jb3N0c9IBAA?oc=5)
+  Azul appoints Aquion as new ANZ distributor to lower Java costs  ChannelLife Australia...
+
+- [Project Loom: Understand the new Java concurrency model - InfoWorld](https://news.google.com/rss/articles/CBMiZWh0dHBzOi8vd3d3LmluZm93b3JsZC5jb20vYXJ0aWNsZS8yMzM0NjA3L3Byb2plY3QtbG9vbS11bmRlcnN0YW5kLXRoZS1uZXctamF2YS1jb25jdXJyZW5jeS1tb2RlbC5odG1s0gFqaHR0cHM6Ly93d3cuaW5mb3dvcmxkLmNvbS9hcnRpY2xlLzIzMzQ2MDcvcHJvamVjdC1sb29tLXVuZGVyc3RhbmQtdGhlLW5ldy1qYXZhLWNvbmN1cnJlbmN5LW1vZGVsLmh0bWwvYW1wLw?oc=5)
+  Project Loom: Understand the new Java concurrency model  InfoWorld...
