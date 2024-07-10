@@ -22,7 +22,8 @@ async function fetchRSSFeed(feedUrl, topic) {
         title: item.title,
         link: item.link,
         pubDate: new Date(item.pubDate),
-        description: item.contentSnippet
+        description: item.contentSnippet,
+        thumbnail: item.enclosure ? item.enclosure.url : 'https://via.placeholder.com/150' // Default thumbnail
       }));
   } catch (error) {
     console.error(`Error fetching RSS feed ${feedUrl}:`, error.message);
@@ -34,12 +35,22 @@ async function updateReadme(topic, articles) {
   const readmePath = './README.md';
   let content = await fs.readFile(readmePath, 'utf8');
 
-  const newContent = `## Latest News and Articles on ${topic}\n\n` +
-    articles.map(article => 
-      `### [${article.title}](${article.link})\n` +
-      `${article.description ? article.description.slice(0, 150) + '...' : ''}\n\n` +
-      `Published: ${article.pubDate.toISOString().split('T')[0]}\n`
-    ).join('\n');
+  const newContent = `
+## Latest News and Articles on ${topic}
+
+<div style="display: flex; flex-wrap: wrap;">
+  ${articles.map(article => `
+    <div style="flex: 1 1 calc(33.333% - 1em); margin: 0.5em;">
+      <a href="${article.link}" target="_blank" style="text-decoration: none; color: inherit;">
+        <img src="${article.thumbnail}" alt="${article.title}" style="width: 100%; height: auto;">
+        <h3>${article.title}</h3>
+        <p>${article.description ? article.description.slice(0, 150) + '...' : ''}</p>
+        <p><small>Published: ${article.pubDate.toISOString().split('T')[0]}</small></p>
+      </a>
+    </div>
+  `).join('')}
+</div>
+  `;
 
   const regex = new RegExp(`## Latest News and Articles on ${topic}[\\s\\S]*?(?=\\n##|$)`, 'i');
   if (content.match(regex)) {
