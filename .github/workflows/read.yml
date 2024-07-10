@@ -11,7 +11,7 @@ on:
 
 jobs:
   update_readme:
-    runs-on: ["self-hosted", "Linux", "X64","ubuntu-latest"]
+    runs-on: "self-hosted"
 
     steps:
     - name: Checkout repository
