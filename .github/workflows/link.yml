@@ -32,14 +32,43 @@ jobs:
           npm init -y
           npm install node-fetch@2
 
+      - name: Install dependencies
+        run: npm install feedparser
+
       - name: Fetch blog news and links
         id: search
         run: |
-          # Replace this with your actual logic to fetch blog news and links
-          # Example: Using node-fetch to fetch data from an API
           topic="${{ github.event.inputs.topic }}"
-          api_url="https://example.com/api/news?topic=${topic}"
-          info=$(node -e "const fetch = require('node-fetch'); fetch('${api_url}').then(res => res.json()).then(data => console.log(data));")
+          feed_url="https://example.com/rss/news?topic=${topic}"
+
+          # Importing feedparser module and fetching data
+          info=$(node -e "
+            const FeedParser = require('feedparser');
+            const fetch = require('node-fetch');
+            const feedparser = new FeedParser();
+
+            let items = [];
+
+            fetch('${feed_url}')
+              .then(res => {
+                if (!res.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                res.body.pipe(feedparser);
+              })
+              .catch(err => console.error('Error fetching feed:', err));
+
+            feedparser.on('error', err => console.error('Feedparser error:', err));
+            feedparser.on('readable', function() {
+              let item;
+              while (item = this.read()) {
+                items.push(item);
+              }
+            });
+            feedparser.on('end', () => {
+              console.log(JSON.stringify(items));
+            });
+          ")
 
           echo "::set-output name=info::${info}"
 
@@ -48,7 +77,6 @@ jobs:
           echo "Updating README with info:"
           echo "${{ steps.search.outputs.info }}"
           node ./scripts/read.js "${{ github.event.inputs.topic }}" "${{ steps.search.outputs.info }}"
-
 
       - name: Commit and push if changed
         run: |
