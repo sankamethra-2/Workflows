@@ -35,7 +35,7 @@ jobs:
       - name: Search and fetch information
         id: search
         run: |
-          node search.js "${{ github.event.inputs.topic }}" >> $GITHUB_OUTPUT
+          node ./scripts/search.js "${{ github.event.inputs.topic }}" >> $GITHUB_OUTPUT
 
       - name: Run search and update script
         run: node ./scripts/read.js "${{ github.event.inputs.topic }}" "${{ steps.search.outputs.info }}"
