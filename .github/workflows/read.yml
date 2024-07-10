@@ -24,4 +24,4 @@ jobs:
     #   run: npm install  # or yarn install if you use Yarn
 
     - name: Run search and update script
-      run: node scripts/read.js "${{ github.event.inputs.topic }}"
+      run: node /home/sankamethras/Workflows/scripts/read.js "${{ github.event.inputs.topic }}"
