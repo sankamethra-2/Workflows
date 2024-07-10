@@ -31,7 +31,7 @@ async function fetchRSSFeed(feedUrl, topic) {
 }
 
 async function updateReadme(topic, articles) {
-  const readmePath = '../README.md';
+  const readmePath = './README.md';
   let content = await fs.readFile(readmePath, 'utf8');
 
   const newContent = `# Latest News and Articles on ${topic}\n\n` +
