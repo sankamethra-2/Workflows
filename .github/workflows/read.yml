@@ -3,7 +3,7 @@ name: Update Readme with Topic Info
 on:
   workflow_dispatch:
     inputs:
-      search_topic: AI
+      search_topic: 'AI'
 
 
   schedule:
