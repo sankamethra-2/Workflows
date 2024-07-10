@@ -1,4 +1,4 @@
-name: Update Readme with Topic link Info
+name: Update Readme with Topic Info
 
 on:
   workflow_dispatch:
@@ -19,64 +19,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      - name: Clear npm cache
-        run: npm cache clean --force
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'v20.12.1'
+          node-version: '16.x'
 
       - name: Install dependencies
-        run: |
-          npm init -y
-          npm install node-fetch@2
-
-      - name: Install dependencies
-        run: npm install feedparser
-
-      - name: Fetch blog news and links
-        id: search
-        run: |
-          topic="${{ github.event.inputs.topic }}"
-          feed_url="https://example.com/rss/news?topic=${topic}"
-
-          # Importing feedparser module and fetching data
-          info=$(node -e "
-            const FeedParser = require('feedparser');
-            const fetch = require('node-fetch');
-            const feedparser = new FeedParser();
-
-            let items = [];
-
-            fetch('${feed_url}')
-              .then(res => {
-                if (!res.ok) {
-                  throw new Error('Network response was not ok');
-                }
-                res.body.pipe(feedparser);
-              })
-              .catch(err => console.error('Error fetching feed:', err));
-
-            feedparser.on('error', err => console.error('Feedparser error:', err));
-            feedparser.on('readable', function() {
-              let item;
-              while (item = this.read()) {
-                items.push(item);
-              }
-            });
-            feedparser.on('end', () => {
-              console.log(JSON.stringify(items));
-            });
-          ")
-
-          echo "::set-output name=info::${info}"
+        run: npm install feedparser node-fetch
 
       - name: Run update script
         run: |
-          echo "Updating README with info:"
-          echo "${{ steps.search.outputs.info }}"
-          node ./scripts/read.js "${{ github.event.inputs.topic }}" "${{ steps.search.outputs.info }}"
+          topic="${{ github.event.inputs.topic }}"
+          node ./scripts/update_readme.js "${topic}"
 
       - name: Commit and push if changed
         run: |
